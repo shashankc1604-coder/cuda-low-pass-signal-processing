@@ -1,0 +1,15 @@
+# Build artifacts
+cuda_fir_filter
+*.exe
+
+# Output data
+data/output/
+results/
+logs/
+
+# Python
+__pycache__/
+*.pyc
+
+# OS
+.DS_Store
