@@ -1,70 +1,42 @@
-# =========================================
-# CUDA + Python Makefile
-# =========================================
+# ============================
+# CUDA Build Configuration
+# ============================
+NVCC       = nvcc
+CXXFLAGS   = -O2 -std=c++17
 
-# Compiler
-NVCC := nvcc
+TARGET     = bin/butterworth_gpu
 
-# Executable name
-TARGET := cuda_fir_filter
+SRCS = \
+	src/main.cu \
+	src/butterworth.cu \
+	src/csv_io.cu
 
-# Source files
-SRC := src/main.cu \
-       src/fir_filter.cu \
-       src/csv_loader.cu
+PYTHON     = python3
+PLOT_SCRIPT = src/plotter_tool.py
 
-# Flags
-NVCC_FLAGS := -std=c++17 -O2
-ARCH := -arch=sm_70
+# ============================
+# Default target
+# ============================
+all: clean build
 
-# Directories
-INPUT_DIR   := data/input
-OUTPUT_DIR  := data/output
-RESULTS_DIR := results
-LOGS_DIR    := logs
-PY_DIR      := python_script
+# ============================
+# Build CUDA binary
+# ============================
+build:
+	mkdir -p bin
+	$(NVCC) $(CXXFLAGS) $(SRCS) -o $(TARGET)
 
-# Python
-PYTHON := python3
-PLOT_SCRIPT := $(PY_DIR)/plot_signals.py
-
-# Libraries
-LIBS := -lcudart
-
-# =========================================
-# Targets
-# =========================================
-
-all: build
-
-build: $(TARGET)
-
-$(TARGET): $(SRC)
-	@echo "Building CUDA executable..."
-	$(NVCC) $(NVCC_FLAGS) $(ARCH) $(SRC) $(LIBS) -o $(TARGET)
-
-run: build dirs
-	@echo "Running CUDA FIR filter..."
+# ============================
+# Run full pipeline
+# ============================
+run: build
+	@echo "=== Running GPU Butterworth Filter ==="
 	./$(TARGET)
-
-plot: run
-	@echo "Running Python plotting script..."
+	@echo "=== Generating plots ==="
 	$(PYTHON) $(PLOT_SCRIPT)
 
-dirs:
-	@mkdir -p $(OUTPUT_DIR)
-	@mkdir -p $(RESULTS_DIR)
-	@mkdir -p $(LOGS_DIR)
-
+# ============================
+# Clean
+# ============================
 clean:
-	@echo "Cleaning build artifacts..."
-	rm -f $(TARGET)
-	rm -rf $(RESULTS_DIR)/*
-	rm -rf $(LOGS_DIR)/*
-
-help:
-	@echo "Available targets:"
-	@echo "  make build   - Compile CUDA code"
-	@echo "  make run     - Run CUDA filtering"
-	@echo "  make plot    - Run CUDA + plotting"
-	@echo "  make clean   - Remove outputs"
+	rm -rf bin/*
