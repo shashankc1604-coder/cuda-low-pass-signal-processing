@@ -1,0 +1,107 @@
+[2026-01-11 10:28:40] GPU Butterworth Filter Application Started
+[2026-01-11 10:28:40] Sampling rate: 2500.000000
+[2026-01-11 10:28:40] Cutoff frequency: 15.000000
+[2026-01-11 10:28:40] Filter type: Low-pass
+[2026-01-11 10:28:42] Butterworth coefficients generated on GPU
+[2026-01-11 10:28:42] --------------------------------------------------
+[2026-01-11 10:28:42] Processing file: data/input/sensor_0013.csv
+[2026-01-11 10:28:42] Signal length: 52668
+[2026-01-11 10:28:42] GPU execution time: 2.176896 ms
+[2026-01-11 10:28:42] Saved output file: data/output/output_sensor_0013.csv
+[2026-01-11 10:28:42] --------------------------------------------------
+[2026-01-11 10:28:42] Processing file: data/input/sensor_0012.csv
+[2026-01-11 10:28:42] Signal length: 52668
+[2026-01-11 10:28:42] GPU execution time: 2.170688 ms
+[2026-01-11 10:28:42] Saved output file: data/output/output_sensor_0012.csv
+[2026-01-11 10:28:42] --------------------------------------------------
+[2026-01-11 10:28:42] Processing file: data/input/sensor_0014.csv
+[2026-01-11 10:28:42] Signal length: 52668
+[2026-01-11 10:28:42] GPU execution time: 2.168960 ms
+[2026-01-11 10:28:42] Saved output file: data/output/output_sensor_0014.csv
+[2026-01-11 10:28:42] --------------------------------------------------
+[2026-01-11 10:28:42] Processing file: data/input/sensor_0004.csv
+[2026-01-11 10:28:42] Signal length: 52668
+[2026-01-11 10:28:42] GPU execution time: 2.175456 ms
+[2026-01-11 10:28:42] Saved output file: data/output/output_sensor_0004.csv
+[2026-01-11 10:28:42] --------------------------------------------------
+[2026-01-11 10:28:42] Processing file: data/input/sensor_0011.csv
+[2026-01-11 10:28:42] Signal length: 52668
+[2026-01-11 10:28:42] GPU execution time: 2.176544 ms
+[2026-01-11 10:28:42] Saved output file: data/output/output_sensor_0011.csv
+[2026-01-11 10:28:42] --------------------------------------------------
+[2026-01-11 10:28:42] Processing file: data/input/sensor_0005.csv
+[2026-01-11 10:28:42] Signal length: 52668
+[2026-01-11 10:28:42] GPU execution time: 2.175968 ms
+[2026-01-11 10:28:42] Saved output file: data/output/output_sensor_0005.csv
+[2026-01-11 10:28:42] --------------------------------------------------
+[2026-01-11 10:28:42] Processing file: data/input/sensor_0006.csv
+[2026-01-11 10:28:42] Signal length: 52668
+[2026-01-11 10:28:42] GPU execution time: 2.175392 ms
+[2026-01-11 10:28:42] Saved output file: data/output/output_sensor_0006.csv
+[2026-01-11 10:28:42] --------------------------------------------------
+[2026-01-11 10:28:42] Processing file: data/input/sensor_0008.csv
+[2026-01-11 10:28:42] Signal length: 52668
+[2026-01-11 10:28:42] GPU execution time: 2.175392 ms
+[2026-01-11 10:28:42] Saved output file: data/output/output_sensor_0008.csv
+[2026-01-11 10:28:42] --------------------------------------------------
+[2026-01-11 10:28:42] Processing file: data/input/sensor_0010.csv
+[2026-01-11 10:28:42] Signal length: 52668
+[2026-01-11 10:28:42] GPU execution time: 2.175200 ms
+[2026-01-11 10:28:42] Saved output file: data/output/output_sensor_0010.csv
+[2026-01-11 10:28:42] --------------------------------------------------
+[2026-01-11 10:28:42] Processing file: data/input/sensor_0009.csv
+[2026-01-11 10:28:42] Signal length: 52668
+[2026-01-11 10:28:42] GPU execution time: 2.168736 ms
+[2026-01-11 10:28:42] Saved output file: data/output/output_sensor_0009.csv
+[2026-01-11 10:28:42] --------------------------------------------------
+[2026-01-11 10:28:42] Processing file: data/input/sensor_0001.csv
+[2026-01-11 10:28:42] Signal length: 52668
+[2026-01-11 10:28:42] GPU execution time: 2.170400 ms
+[2026-01-11 10:28:42] Saved output file: data/output/output_sensor_0001.csv
+[2026-01-11 10:28:42] --------------------------------------------------
+[2026-01-11 10:28:42] Processing file: data/input/sensor_0007.csv
+[2026-01-11 10:28:42] Signal length: 52668
+[2026-01-11 10:28:42] GPU execution time: 2.170976 ms
+[2026-01-11 10:28:42] Saved output file: data/output/output_sensor_0007.csv
+[2026-01-11 10:28:42] --------------------------------------------------
+[2026-01-11 10:28:42] Processing file: data/input/sensor_0003.csv
+[2026-01-11 10:28:42] Signal length: 52668
+[2026-01-11 10:28:42] GPU execution time: 2.176704 ms
+[2026-01-11 10:28:42] Saved output file: data/output/output_sensor_0003.csv
+[2026-01-11 10:28:42] --------------------------------------------------
+[2026-01-11 10:28:42] Processing file: data/input/sensor_0002.csv
+[2026-01-11 10:28:42] Signal length: 52668
+[2026-01-11 10:28:42] GPU execution time: 2.176608 ms
+[2026-01-11 10:28:42] Saved output file: data/output/output_sensor_0002.csv
+[2026-01-11 10:28:42] Freed Butterworth coefficient memory
+[2026-01-11 10:28:42] Application finished successfully
+[2026-01-11 10:28:43] Python plotting started
+[2026-01-11 10:28:43] Plotting file: data/output/output_sensor_0001.csv
+[2026-01-11 10:28:43] Saved plot: data/plots/output_sensor_0001.png
+[2026-01-11 10:28:43] Plotting file: data/output/output_sensor_0002.csv
+[2026-01-11 10:28:43] Saved plot: data/plots/output_sensor_0002.png
+[2026-01-11 10:28:43] Plotting file: data/output/output_sensor_0003.csv
+[2026-01-11 10:28:43] Saved plot: data/plots/output_sensor_0003.png
+[2026-01-11 10:28:43] Plotting file: data/output/output_sensor_0004.csv
+[2026-01-11 10:28:43] Saved plot: data/plots/output_sensor_0004.png
+[2026-01-11 10:28:43] Plotting file: data/output/output_sensor_0005.csv
+[2026-01-11 10:28:43] Saved plot: data/plots/output_sensor_0005.png
+[2026-01-11 10:28:43] Plotting file: data/output/output_sensor_0006.csv
+[2026-01-11 10:28:44] Saved plot: data/plots/output_sensor_0006.png
+[2026-01-11 10:28:44] Plotting file: data/output/output_sensor_0007.csv
+[2026-01-11 10:28:44] Saved plot: data/plots/output_sensor_0007.png
+[2026-01-11 10:28:44] Plotting file: data/output/output_sensor_0008.csv
+[2026-01-11 10:28:44] Saved plot: data/plots/output_sensor_0008.png
+[2026-01-11 10:28:44] Plotting file: data/output/output_sensor_0009.csv
+[2026-01-11 10:28:44] Saved plot: data/plots/output_sensor_0009.png
+[2026-01-11 10:28:44] Plotting file: data/output/output_sensor_0010.csv
+[2026-01-11 10:28:44] Saved plot: data/plots/output_sensor_0010.png
+[2026-01-11 10:28:44] Plotting file: data/output/output_sensor_0011.csv
+[2026-01-11 10:28:44] Saved plot: data/plots/output_sensor_0011.png
+[2026-01-11 10:28:44] Plotting file: data/output/output_sensor_0012.csv
+[2026-01-11 10:28:45] Saved plot: data/plots/output_sensor_0012.png
+[2026-01-11 10:28:45] Plotting file: data/output/output_sensor_0013.csv
+[2026-01-11 10:28:45] Saved plot: data/plots/output_sensor_0013.png
+[2026-01-11 10:28:45] Plotting file: data/output/output_sensor_0014.csv
+[2026-01-11 10:28:45] Saved plot: data/plots/output_sensor_0014.png
+[2026-01-11 10:28:45] Python plotting finished

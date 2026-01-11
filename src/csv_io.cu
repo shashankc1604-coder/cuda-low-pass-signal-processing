@@ -41,20 +41,32 @@ std::vector<float> load_csv(const std::string& filepath)
 
 
 // Save vector<float> to CSV file
-void save_csv(const std::string& filepath,
-              const std::vector<float>& data)
+void save_csv_two_columns(const std::string& filepath,
+                          const std::vector<float>& col1,
+                          const std::vector<float>& col2,
+                          const std::string& name1,
+                          const std::string& name2)
 {
-    std::ofstream file(filepath);
+    if (col1.size() != col2.size()) {
+        std::cerr << "ERROR: Column size mismatch\n";
+        return;
+    }
 
+    std::ofstream file(filepath);
     if (!file.is_open()) {
-        std::cerr << "ERROR: Unable to write CSV file: "
+        std::cerr << "ERROR: Unable to write CSV: "
                   << filepath << std::endl;
         return;
     }
 
-    for (const float& value : data) {
-        file << value << "\n";
+    // Header
+    file << name1 << "," << name2 << "\n";
+
+    // Data
+    for (size_t i = 0; i < col1.size(); ++i) {
+        file << col1[i] << "," << col2[i] << "\n";
     }
 
     file.close();
 }
+

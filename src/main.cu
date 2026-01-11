@@ -23,16 +23,22 @@ std::string timestamp()
 
 void log_msg(const std::string& msg)
 {
-    log_file << "[" << timestamp() << "] " << msg << std::endl;
-}
+    std::string line = "[" + timestamp() + "] " + msg;
+    std::cout << line << std::endl;
 
+    if (log_file.is_open()) {
+        log_file << line << std::endl;
+        log_file.flush();
+    }
+}
 
 int main(int argc, char* argv[])
 {
-    const std::string input_csv  = "data/input_signal.csv";
-    const std::string output_csv = "data/output_filtered.csv";
+    const std::string input_dir  = "data/input";
+    const std::string output_dir = "data/output";
     const std::string log_path   = "log/run.log";
 
+    std::filesystem::create_directories(output_dir);
     std::filesystem::create_directories("log");
 
     log_file.open(log_path, std::ios::out);
@@ -43,53 +49,20 @@ int main(int argc, char* argv[])
 
     log_msg("GPU Butterworth Filter Application Started");
 
-    // Parameters (can be extended to CLI later)
     const float fs = 2500.0f;     // Sampling frequency (Hz)
-    const float fc = 50.0f;       // Cutoff frequency (Hz)
+    const float fc = 15.0f;       // Cutoff frequency (Hz)
     const ButterworthType filter_type = BUTTER_LOWPASS;
-    const int filter_order = 3;
 
     log_msg("Sampling rate: " + std::to_string(fs));
     log_msg("Cutoff frequency: " + std::to_string(fc));
     log_msg("Filter type: Low-pass");
-    log_msg("Filter order: " + std::to_string(filter_order));
 
-    // Load input CSV
-    log_msg("Loading input CSV: " + input_csv);
-    std::vector<float> input_signal = load_csv(input_csv);
+    float* d_b = nullptr;   // b0, b1, b2
+    float* d_a = nullptr;   // a1, a2
 
-    if (input_signal.empty()) {
-        log_msg("ERROR: Input signal is empty");
-        return -1;
-    }
-
-    const int N = static_cast<int>(input_signal.size());
-    log_msg("Signal length: " + std::to_string(N));
-
-    // Allocate GPU memory
-    float* d_input  = nullptr;
-    float* d_output = nullptr;
-    float* d_b      = nullptr;  // Numerator coeffs
-    float* d_a      = nullptr;  // Denominator coeffs
-
-    CUDA_CHECK(cudaMalloc(&d_input,  N * sizeof(float)));
-    CUDA_CHECK(cudaMalloc(&d_output, N * sizeof(float)));
     CUDA_CHECK(cudaMalloc(&d_b, 3 * sizeof(float)));
     CUDA_CHECK(cudaMalloc(&d_a, 2 * sizeof(float)));
 
-    log_msg("Allocated GPU memory");
-
-    
-    // Copy input signal to GPU
-    CUDA_CHECK(cudaMemcpy(d_input,
-                          input_signal.data(),
-                          N * sizeof(float),
-                          cudaMemcpyHostToDevice));
-
-    log_msg("Copied input signal to GPU");
-
-    // Generate Butterworth coefficients on GPU
-    log_msg("Generating Butterworth coefficients on GPU");
     launch_butterworth_coeffs(
         d_b,
         d_a,
@@ -98,48 +71,81 @@ int main(int argc, char* argv[])
         filter_type
     );
 
-    log_msg("Butterworth coefficients generated");
+    log_msg("Butterworth coefficients generated on GPU");
 
-    
-    // Apply Butterworth filter on GPU
-    GpuTimer timer;
-    timer.tic();
 
-    launch_butterworth_filter(
-        d_input,
-        d_output,
-        N,
-        d_b,
-        d_a
-    );
+    for (const auto& entry : std::filesystem::directory_iterator(input_dir)) {
 
-    float elapsed_ms = timer.toc();
-    log_msg("Filtering completed on GPU");
-    log_msg("GPU execution time: " + std::to_string(elapsed_ms) + " ms");
+        if (!entry.is_regular_file())
+            continue;
 
-    
-    // Copy filtered signal back to host
-    std::vector<float> output_signal(N);
-    CUDA_CHECK(cudaMemcpy(output_signal.data(),
-                          d_output,
-                          N * sizeof(float),
-                          cudaMemcpyDeviceToHost));
+        if (entry.path().extension() != ".csv")
+            continue;
 
-    log_msg("Copied filtered signal back to CPU");
+        std::string input_path  = entry.path().string();
+        std::string filename    = entry.path().filename().string();
+        std::string output_path = output_dir + "/output_" + filename;
 
-   
-    // Save output CSV
-    save_csv(output_csv, output_signal);
-    log_msg("Saved output CSV: " + output_csv);
+        log_msg("--------------------------------------------------");
+        log_msg("Processing file: " + input_path);
 
-    
-    // Cleanup
-    cudaFree(d_input);
-    cudaFree(d_output);
+        std::vector<float> input_signal = load_csv(input_path);
+
+        if (input_signal.empty()) {
+            log_msg("WARNING: Empty or invalid CSV, skipping");
+            continue;
+        }
+
+        int N = static_cast<int>(input_signal.size());
+        log_msg("Signal length: " + std::to_string(N));
+
+        float* d_input  = nullptr;
+        float* d_output = nullptr;
+
+        CUDA_CHECK(cudaMalloc(&d_input,  N * sizeof(float)));
+        CUDA_CHECK(cudaMalloc(&d_output, N * sizeof(float)));
+
+        CUDA_CHECK(cudaMemcpy(d_input,
+                              input_signal.data(),
+                              N * sizeof(float),
+                              cudaMemcpyHostToDevice));
+
+        GpuTimer timer;
+        timer.tic();
+
+        launch_butterworth_filter(
+            d_input,
+            d_output,
+            N,
+            d_b,
+            d_a
+        );
+
+        float elapsed_ms = timer.toc();
+        log_msg("GPU execution time: " +
+                std::to_string(elapsed_ms) + " ms");
+
+        std::vector<float> output_signal(N);
+        CUDA_CHECK(cudaMemcpy(output_signal.data(),
+                              d_output,
+                              N * sizeof(float),
+                              cudaMemcpyDeviceToHost));
+        
+        save_csv_two_columns(output_path,
+                     input_signal,
+                     output_signal,
+                     "original_signal",
+                     "filtered_signal");
+        log_msg("Saved output file: " + output_path);
+
+        cudaFree(d_input);
+        cudaFree(d_output);
+    }
+
     cudaFree(d_b);
     cudaFree(d_a);
 
-    log_msg("Freed GPU memory");
+    log_msg("Freed Butterworth coefficient memory");
     log_msg("Application finished successfully");
 
     log_file.close();

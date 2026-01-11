@@ -5,13 +5,9 @@
 // Supports:
 //  - One value per line
 //  - Comma-separated values
-//
-// Returns:
-//  - std::vector<float> with parsed samples
-//  - Empty vector if file cannot be read
 std::vector<float> load_csv(const std::string& filepath);
-
-// Save numeric samples to a CSV file.
-// Each value is written on a new line.
-void save_csv(const std::string& filepath,
-              const std::vector<float>& data);
+void save_csv_two_columns(const std::string& filepath,
+                          const std::vector<float>& col1,
+                          const std::vector<float>& col2,
+                          const std::string& name1,
+                          const std::string& name2);
